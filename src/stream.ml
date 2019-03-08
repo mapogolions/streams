@@ -1,47 +1,27 @@
 
 type 'a t = ('a -> unit) -> (unit -> unit)
 
-external clearTimeout : (float -> unit) = "" [@@bs.val]
-external setTimeout : (unit -> unit) -> int -> float = "" [@@bs.val]
-
 let noop () = ()
 let empty_stream : 'a t = fun _f -> noop
 let empty () = empty_stream
-let of_item (value : 'a) : 'a t = fun f -> f value; noop
-let prepend (value : 'a) (stream : 'a t) = fun f -> f value; stream f
+let of_item (value : 'a) : 'a t = fun f -> let _ = f value in noop
 let later (delay : int) : unit t =
-  fun cb -> let tid = setTimeout cb delay in
-  fun () -> clearTimeout tid
+  fun f -> let tid = Interop.setTimeout f delay in
+  fun () -> Interop.clearTimeout tid
 
+let prepend (value : 'a) (stream : 'a t) = fun cb -> let _ = cb value in stream cb
 
-let rec of_list (xs : 'a list) : 'a t =
-  match xs with
-  | [] -> empty ()
-  | h :: t -> prepend h (of_list t)
+let of_list (xs : 'a list) = 
+  Foldable.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
 
-let rec fold_right (f : 'a -> 'b -> 'b) (seed : 'b) (xs : 'a list) : 'b =
-  match xs with
-  | [] -> seed
-  | h :: t -> f h (fold_right f seed t)
-
-let rec fold_left (f : 'b -> 'a -> 'b) (seed : 'b) (xs : 'a list) : 'b =
-  match xs with
-  | [] -> seed
-  | h :: t -> fold_left f (f seed h) t
-
-let of_list_iter (xs : 'a list) = fold_right (fun x stream -> prepend x stream) (empty ()) xs
+let of_list_reverse (xs : 'a list) =
+  Foldable.List.fold_left (fun stream x -> prepend x stream) (empty ()) xs
 
 let of_array (xs : 'a array) : 'a t =
-  let rec iter index =
-    if index >= Array.length xs then empty ()
-    else prepend xs.(index) (iter (index + 1))
-  in iter 0
+  Foldable.Array.fold_right (fun x stream -> prepend x stream) (empty()) xs
 
-let of_array_iter (xs : 'a array) : 'a t =
-  let rec iter index stream = 
-    if index < 0 then stream
-    else iter (index - 1) (prepend xs.(index) stream)
-  in iter (Array.length xs - 1) (empty ())
+let of_array_reverse (xs : 'a array) : 'a t =
+  Foldable.Array.fold_left (fun stream x -> prepend x stream) (empty ()) xs
 
 let map (f : 'a -> 'b) (stream : 'a t) : 'b t = 
   fun cb -> stream (fun x -> cb (f x))
