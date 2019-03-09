@@ -11,6 +11,12 @@ let later (delay : int) : unit t =
 
 let prepend (value : 'a) (stream : 'a t) = fun cb -> let _ = cb value in stream cb
 
+let scan (reducer : 'b -> 'a -> 'b) (seed : 'b) (stream : 'a t) : 'b t =
+  fun cb ->
+    let acc = ref seed in
+    let _ = cb seed in stream (fun elem -> 
+      let _ = acc := reducer !acc elem in cb !acc)
+
 let of_list (xs : 'a list) = 
   Foldable.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
 
