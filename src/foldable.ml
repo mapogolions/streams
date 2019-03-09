@@ -14,14 +14,14 @@ end
 module Array = struct
   type 'a t = 'a array
   let fold_left (f: 'b -> 'a -> 'b) (seed : 'b) (xs : 'a t) : 'b =
-    let rec iter acc index =
-      if index >= Array.length xs then acc
+    let rec iter seed index =
+      if index >= Array.length xs then seed
       else iter (f seed xs.(index)) (index + 1)
     in iter seed 0
 
   let fold_right (f: 'a -> 'b -> 'b) (seed : 'b) (xs : 'a t) : 'b =
-    let rec iter acc index = 
-      if index < 0 then acc
+    let rec iter seed index =
+      if index < 0 then seed
       else iter (f xs.(index) seed) (index - 1)
     in iter seed (Array.length xs - 1)
 end

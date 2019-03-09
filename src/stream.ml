@@ -17,6 +17,10 @@ let scan (reducer : 'b -> 'a -> 'b) (seed : 'b) (stream : 'a t) : 'b t =
     let _ = cb seed in stream (fun elem -> 
       let _ = acc := reducer !acc elem in cb !acc)
 
+let skip (n : int) (stream : 'a) = fun cb -> 
+  let count = ref n in
+  stream (fun x -> if !count > 0 then let _ = count := !count - 1 in () else cb x)
+
 let of_list (xs : 'a list) = 
   Foldable.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
 
@@ -34,6 +38,7 @@ let map (f : 'a -> 'b) (stream : 'a t) : 'b t =
 
 let filter (predicate : 'a -> bool) (stream : 'a t) : 'a t =
   fun cb -> stream (fun x -> if predicate x then cb x else ())
+
 
 let async_of_list (later : int -> unit t) (delay : int) (xs : 'a list) =
   fun cb -> let stream = later delay in
