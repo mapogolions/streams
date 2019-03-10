@@ -1,6 +1,39 @@
 open Jest
 
 
+let _ = 
+  describe "stream later" (fun () -> 
+    let open Expect in
+    testAsync "delay = 200ms" (fun finish -> 
+      let mock_fn = JestJs.fn (fun _x -> ()) in
+      let stream = Stream.later 500 in
+      let _ = stream (fun () -> 
+        let _ = MockJs.fn mock_fn 1 in
+        let calls = mock_fn |> MockJs.calls in
+        expect calls |> toEqual [|1|] |> finish
+      ) in ()
+    )
+  )
+
+let _ =
+  describe "stream scan" (fun () -> 
+    let open Expect in 
+    test "partial sums" (fun () ->
+      let mock_fn = JestJs.fn (fun _x -> ()) in
+      let stream = Stream.scan (fun seed x -> seed + x) 0 (Stream.of_list [-1; 2; -2; 3]) in
+      let _ = stream (MockJs.fn mock_fn) in
+      let calls = mock_fn |> MockJs.calls in
+      expect calls |> toEqual [|0; -1; 1; -1; 2|]
+    );
+    test "partial products" (fun () -> 
+      let mock_fn = JestJs.fn (fun _x -> ()) in
+      let stream = Stream.scan (fun seed x -> seed * x) 1 (Stream.of_array [|1; 2; 3; 4|]) in
+      let _ = stream (MockJs.fn mock_fn) in
+      let calls = mock_fn |> MockJs.calls in
+      expect calls |> toEqual [|1; 1; 2; 6; 24|]
+    )
+  )
+
 let _ =
   describe "stream filter" (fun () -> 
     let open Expect in 
@@ -16,14 +49,14 @@ let _ =
 let _ =
   describe "stream map" (fun () -> 
     let open Expect in 
-    test "every integer from list multiply by 10" (fun () ->
+    test "integers are multiplied by 10" (fun () ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let stream = Stream.map (fun x -> x * 10) (Stream.of_list [1; 2; 3; 4]) in
       let _ = stream (MockJs.fn mock_fn) in
       let calls = mock_fn |> MockJs.calls in
       expect calls |> toEqual [|10; 20; 30; 40|]
     );
-    test "get length of strings" (fun () ->
+    test "strings are mapped to integers" (fun () ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let stream = Stream.map String.length(Stream.of_list ["1"; "12"; "123"]) in
       let _ = stream (MockJs.fn mock_fn) in
@@ -33,23 +66,23 @@ let _ =
   )
 
 let _ =
-  describe "skip some elements" (fun () -> 
+  describe "skip `n` elements" (fun () -> 
     let open Expect in 
-    test "count in bounds" (fun () ->
+    test "if `n` is greater then zero and less than length of sequence" (fun () ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let stream = Stream.skip 2 (Stream.of_list [1; 2; 3; 4]) in
       let _ = stream (MockJs.fn mock_fn) in
       let calls = mock_fn |> MockJs.calls in
       expect calls |> toEqual [|3; 4|]
     );
-    test "count is less than zero" (fun () ->
+    test "if `n` less than zero" (fun () ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let stream = Stream.skip (-1) (Stream.of_list [1; 2; 3; 4]) in
       let _ = stream (MockJs.fn mock_fn) in
       let calls = mock_fn |> MockJs.calls in
       expect calls |> toEqual [|1; 2; 3; 4|]
     );
-    test "count is grather than length of sequence" (fun () ->
+    test "if `n` is greater than length of sequence" (fun () ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let stream = Stream.skip 100 (Stream.of_list [1; 2; 3; 4]) in
       let _ = stream (MockJs.fn mock_fn) in
