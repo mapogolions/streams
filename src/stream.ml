@@ -21,14 +21,17 @@ let skip (n : int) (stream : 'a t) = fun cb ->
   let count = ref n in
   stream (fun x -> if !count > 0 then let _ = count := !count - 1 in () else cb x)
 
+let reverse (stream : 'a t) : 'a t =
+  let acc = ref (empty ()) in
+  let _ = stream (fun x -> let _ = acc := prepend x !acc in ()) in !acc
+
 let skip_while (predicate : 'a -> bool) (stream : 'a t) = fun cb ->
   let miss = ref true in
   stream (fun x -> 
     if !miss then 
       let _ = miss := predicate x in
       if not !miss then cb x else ()
-    else cb x
-  )
+    else cb x)
 
 let of_list (xs : 'a list) = 
   Foldable.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
