@@ -61,7 +61,7 @@ module Async = struct
                 | []      -> ()
                 | h :: [] -> cb h;
                 | h :: t  -> begin unsubscribe := stream (fun () -> iter t); cb h end
-              in begin unsubscribe := stream (fun () -> iter xs); fun () -> !unsubscribe () end
+              in begin unsubscribe := stream (fun () -> iter xs); !unsubscribe end
 
   let of_array (delay : int) (xs : 'a array) =
     fun cb -> let stream = later delay in
@@ -70,5 +70,5 @@ module Async = struct
                 if index >= Array.length xs then ()
                 else if index >= Array.length xs - 1 then cb xs.(index)
                 else begin unsubscribe := stream (fun () -> iter (index + 1)); cb xs.(index) end
-              in begin unsubscribe := stream (fun () -> iter 0); fun () -> !unsubscribe () end
+              in begin unsubscribe := stream (fun () -> iter 0); !unsubscribe end
 end
