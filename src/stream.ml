@@ -26,7 +26,7 @@ let take (n : int) (stream : 'a t) = fun cb ->
   let unsubscribe = ref noop in
   let _ = unsubscribe := stream (fun x -> 
     if !count <= 0 then !unsubscribe () 
-    else if !count <= 1 then begin !unsubscribe (); cb x end
+    else if !count <= 1 then begin !unsubscribe (); count := !count - 1; cb x end
     else begin count := !count - 1; cb x end
   ) in fun () -> !unsubscribe ()
 
