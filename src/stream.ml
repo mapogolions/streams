@@ -21,6 +21,21 @@ let skip (n : int) (stream : 'a t) = fun cb ->
   let count = ref n in
   stream (fun x -> if !count > 0 then let _ = count := !count - 1 in () else cb x)
 
+let take (n : int) (stream : 'a t) = fun cb ->
+  let count = ref n in
+  let unsubscribe = ref noop in
+  let _ = unsubscribe := stream (fun x -> 
+    if !count <= 0 then !unsubscribe () 
+    else if !count <= 1 then begin !unsubscribe (); cb x end
+    else begin count := !count - 1; cb x end
+  ) in fun () -> !unsubscribe ()
+
+let take_while (predicate : 'a -> bool) (stream : 'a t) = fun cb ->
+  let unsubscribe = ref noop in
+  let _ = unsubscribe := stream (fun x ->
+    if not (predicate x) then !unsubscribe () else cb x
+  ) in fun () -> !unsubscribe ()
+
 let reverse (stream : 'a t) : 'a t =
   let acc = ref (empty ()) in
   let _ = stream (fun x -> let _ = acc := prepend x !acc in ()) in !acc
@@ -61,7 +76,7 @@ module Async = struct
                 | []      -> ()
                 | h :: [] -> cb h;
                 | h :: t  -> begin unsubscribe := stream (fun () -> iter t); cb h end
-              in begin unsubscribe := stream (fun () -> iter xs); !unsubscribe end
+              in begin unsubscribe := stream (fun () -> iter xs); fun () -> !unsubscribe () end
 
   let of_array (delay : int) (xs : 'a array) =
     fun cb -> let stream = later delay in
@@ -70,5 +85,5 @@ module Async = struct
                 if index >= Array.length xs then ()
                 else if index >= Array.length xs - 1 then cb xs.(index)
                 else begin unsubscribe := stream (fun () -> iter (index + 1)); cb xs.(index) end
-              in begin unsubscribe := stream (fun () -> iter 0); !unsubscribe end
+              in begin unsubscribe := stream (fun () -> iter 0); fun () -> !unsubscribe () end
 end
