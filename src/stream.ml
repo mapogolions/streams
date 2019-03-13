@@ -21,6 +21,14 @@ let skip (n : int) (stream : 'a t) = fun cb ->
   let count = ref n in
   stream (fun x -> if !count > 0 then let _ = count := !count - 1 in () else cb x)
 
+let chain (f : ('a -> 'b t)) (stream : 'a t): 'b t = fun cb ->
+  let spawned_disposers = ref [] in
+  let main_disposer = ref noop in
+  let _ = main_disposer := stream (fun x -> 
+    let unsubscribe = (f x) cb in
+    let _ = spawned_disposers := unsubscribe :: !spawned_disposers in ()
+  ) in fun () -> begin !main_disposer (); List.iter (fun f -> f ()) !spawned_disposers end
+
 let take (n : int) (stream : 'a t) = fun cb ->
   let count = ref n in
   let unsubscribe = ref noop in
