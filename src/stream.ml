@@ -5,6 +5,7 @@ let noop () = ()
 let empty_stream : 'a t = fun _f -> noop
 let empty () = empty_stream
 let of_item (value : 'a) : 'a t = fun f -> let _ = f value in noop
+
 let later (delay : int) : unit t =
   fun f -> let tid = Interop.setTimeout f delay in
   fun () -> Interop.clearTimeout tid
@@ -21,17 +22,23 @@ let skip (n : int) (stream : 'a t) = fun cb ->
   let count = ref n in
   stream (fun x -> if !count > 0 then let _ = count := !count - 1 in () else cb x)
 
-let chain (f : ('a -> 'b t)) (stream : 'a t): 'b t = fun cb ->
-  let spawned_disposers = ref [] in
-  let main_disposer = ref noop in
-  let _ = main_disposer := stream (fun x -> 
+let chain (f : 'a -> 'b t) (stream : 'a t) : 'b t = fun cb ->
+  let spawned_disposers = ref [] and base_disposer = ref noop in
+  let _ = base_disposer := stream (fun x -> 
     let unsubscribe = (f x) cb in
     let _ = spawned_disposers := unsubscribe :: !spawned_disposers in ()
-  ) in fun () -> begin !main_disposer (); List.iter (fun f -> f ()) !spawned_disposers end
+  ) in fun () -> begin !base_disposer (); List.iter (fun f -> f ()) !spawned_disposers end
+
+let chain_latest (f : 'a -> 'b t) (stream : 'a t) : 'b t = fun cb ->
+  let spawned_unsubscribe = ref noop and base_unsubscribe = ref noop in
+  let _ = base_unsubscribe := stream (fun x ->
+    let _ = !spawned_unsubscribe () in
+    let _ = spawned_unsubscribe := (f x) cb in ()
+  ) in fun () -> begin !base_unsubscribe (); !spawned_unsubscribe () end
 
 let take (n : int) (stream : 'a t) = fun cb ->
-  let count = ref n in
-  let unsubscribe = ref noop in
+  let count = ref n
+  and unsubscribe = ref noop in
   let _ = unsubscribe := stream (fun x -> 
     if !count <= 0 then !unsubscribe () 
     else if !count <= 1 then begin !unsubscribe (); count := !count - 1; cb x end
@@ -76,22 +83,18 @@ let filter (predicate : 'a -> bool) (stream : 'a t) : 'a t =
 
 
 module Async = struct
-  let of_list (delay : int) (xs : 'a list) =
-    fun cb -> let stream = later delay in
-              let unsubscribe = ref noop in
-              let rec iter xs =
-                match xs with
-                | []      -> ()
-                | h :: [] -> cb h;
-                | h :: t  -> begin unsubscribe := stream (fun () -> iter t); cb h end
-              in begin unsubscribe := stream (fun () -> iter xs); fun () -> !unsubscribe () end
+  let of_list (delay : int) (xs : 'a list) = fun cb -> 
+    let stream = later delay and unsubscribe = ref noop in
+      let rec iter xs =
+        match xs with
+        | []      -> ()
+        | h :: t  -> begin unsubscribe := stream (fun () -> iter t); cb h end
+      in begin unsubscribe := stream (fun () -> iter xs); fun () -> !unsubscribe () end
 
-  let of_array (delay : int) (xs : 'a array) =
-    fun cb -> let stream = later delay in
-              let unsubscribe = ref noop in
-              let rec iter index =
-                if index >= Array.length xs then ()
-                else if index >= Array.length xs - 1 then cb xs.(index)
-                else begin unsubscribe := stream (fun () -> iter (index + 1)); cb xs.(index) end
-              in begin unsubscribe := stream (fun () -> iter 0); fun () -> !unsubscribe () end
+  let of_array (delay : int) (xs : 'a array) = fun cb -> 
+    let stream = later delay and unsubscribe = ref noop in
+      let rec iter index =
+        if index >= Array.length xs then ()
+        else begin unsubscribe := stream (fun () -> iter (index + 1)); cb xs.(index) end
+      in begin unsubscribe := stream (fun () -> iter 0); fun () -> !unsubscribe () end
 end
