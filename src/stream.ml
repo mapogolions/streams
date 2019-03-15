@@ -63,6 +63,8 @@ let skip_while (predicate : 'a -> bool) (stream : 'a t) = fun cb ->
       if not !miss then cb x else ()
     else cb x)
 
+let subscribe (cb : 'a -> unit) (stream : 'a t) = stream cb
+
 let of_list (xs : 'a list) = 
   Foldable.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
 
