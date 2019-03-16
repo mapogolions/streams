@@ -4,7 +4,7 @@ open Jest
 let _ = 
   describe "stream async" (fun () ->
     testPromise "Start every 10 ms" (fun () ->
-      Test.Async.success_for_list 
+      Test.Async.match_to_list
         ~source:["third"; "second"; "first"]  
         ~exhaust:[|"third"; "second"; "first"|] 
         ~delay:10

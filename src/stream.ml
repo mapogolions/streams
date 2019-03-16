@@ -62,16 +62,16 @@ let skip_while (predicate : 'a -> bool) (stream : 'a t) = fun cb ->
 let subscribe (cb : 'a -> unit) (stream : 'a t) = stream cb
 
 let of_list (xs : 'a list) = 
-  Foldable.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
+  Base.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
 
 let of_list_reverse (xs : 'a list) =
-  Foldable.List.fold_left (fun stream x -> prepend x stream) (empty ()) xs
+  Base.List.fold_left (fun stream x -> prepend x stream) (empty ()) xs
 
 let of_array (xs : 'a array) : 'a t =
-  Foldable.Array.fold_right (fun x stream -> prepend x stream) (empty()) xs
+  Base.Array.fold_right (fun x stream -> prepend x stream) (empty()) xs
 
 let of_array_reverse (xs : 'a array) : 'a t =
-  Foldable.Array.fold_left (fun stream x -> prepend x stream) (empty ()) xs
+  Base.Array.fold_left (fun stream x -> prepend x stream) (empty ()) xs
 
 let map (f : 'a -> 'b) (stream : 'a t) : 'b t = 
   fun cb -> stream (fun x -> cb (f x))

@@ -12,12 +12,11 @@ let _ =
       expect calls |> toEqual [|10; 20; 30; 40|]
     );
 
-    testAsync "stream of strings is mapped to stream of integers" (fun finish ->
-      let mock_fn = JestJs.fn (fun _x -> ()) in
-      let stream = Stream.map String.length (Stream.Async.of_list 0 ["1"; "12"; "123"]) in
-      let _ = stream (MockJs.fn mock_fn) in
-      let _ = Interop.setTimeout (fun () ->
-        let calls = mock_fn |> MockJs.calls in expect calls |> toEqual [|1; 2; 3|] |> finish
-      ) 100 in ()
-    )
+    testPromise "stream of strings is mapped to stream of integers" (fun () ->
+      let source = ["1"; "12"; "123"] in
+      let exhaust = List.map String.length source in
+      let base = Stream.Async.of_list 0 source in
+      let stream = base |> Stream.map String.length in
+      Test.Async.check_subsequence ~stream ~exhaust:(Base.List.array_of_list exhaust)
+    );
   )

@@ -9,6 +9,9 @@ module List = struct
     match xs with
     | []     -> seed
     | h :: t -> f h (fold_right f seed t)
+
+  let array_of_list (xs : 'a t) =
+    fold_left (fun acc x -> Array.append acc [|x|]) [||] xs
 end
 
 module Array = struct
@@ -24,4 +27,12 @@ module Array = struct
       if index < 0 then seed
       else iter (f xs.(index) seed) (index - 1)
     in iter seed (Array.length xs - 1)
+
+  let map (f : 'a -> 'b) (xs : 'a t) : 'b t = 
+    fold_left (fun acc x -> Array.append acc [|(f x)|]) [||] xs
+
+  let filter (f : 'a -> bool) (xs : 'a t) : 'a t = 
+    fold_left (fun acc x -> if f x then Array.append acc [|x|] else acc) [||] xs
+
+  let list_of_array (xs : 'a t) = fold_right (fun x acc -> x :: acc) [] xs
 end
