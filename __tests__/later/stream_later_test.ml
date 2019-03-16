@@ -23,6 +23,23 @@ let _ =
       )
     );
 
+    (* testPromise "Drop testAsync Pattern" (fun () ->
+      Js.Promise.make (fun ~resolve ~reject:_ ->
+        let source = [1; 2; 3] in
+        let mock_fn = JestJs.fn (fun _x -> ()) in
+        let subscriber = fun x ->
+          let _ = MockJs.fn mock_fn x in
+          let calls = mock_fn |> MockJs.calls in 
+          if Array.length calls < List.length source then ()
+          else resolve (expect calls |> toEqual [|1; 2; 3|]) [@bs]
+        in
+        let _unsubscribe = source
+          |> Stream.Async.of_list 100
+          |> Stream.subscribe subscriber
+        in ()
+      )
+    ); *)
+
     testPromise "call of unsubscribe function after stream gave all data" (fun () ->
       Js.Promise.make (fun ~resolve ~reject ->
         let stream = Stream.later 10 in
@@ -31,5 +48,5 @@ let _ =
           let _ = unsubscribe () in reject (failwith "error") [@bs]
         ) 100 in ()
       )
-    )
+    );
   )

@@ -51,10 +51,6 @@ let take_while (predicate : 'a -> bool) (stream : 'a t) = fun cb ->
     if not (predicate x) then !unsubscribe () else cb x
   ) in fun () -> !unsubscribe ()
 
-let reverse (stream : 'a t) : 'a t =
-  let acc = ref (empty ()) in
-  let _ = stream (fun x -> let _ = acc := prepend x !acc in ()) in !acc
-
 let skip_while (predicate : 'a -> bool) (stream : 'a t) = fun cb ->
   let miss = ref true in
   stream (fun x -> 

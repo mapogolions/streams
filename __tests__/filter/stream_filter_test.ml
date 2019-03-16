@@ -20,7 +20,13 @@ let _ =
       expect calls |> toEqual [|-1; 1; 3|]
     );
 
-    testAsync "leave those numbers that are even" (fun finish ->
+    (* testPromise "leave thos numbsers that are even" (fun () ->
+      Test.Async.success_for_stream
+        ~source:[-1; 0; 1; 2; 3; 4] 
+        ~exhaust:[|-1; 0; 1; 2; 3; 4|]
+        ~filters:[Stream.filter (fun x -> x mod 2 = 0)]
+    ); *)
+    (* testAsync "leave those numbers that are even" (fun finish ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let even = fun x -> x mod 2 = 0 in
       let stream = Stream.filter even (Stream.Async.of_list 0 [-1; 0; 1; 2; 3; 4]) in
@@ -28,5 +34,5 @@ let _ =
       let _ = Interop.setTimeout (fun () ->
         let calls = mock_fn |> MockJs.calls in expect calls |> toEqual [|0; 2; 4|] |> finish
       ) 100 in ()
-    )
+    ); *)
   )
