@@ -1,9 +1,11 @@
-# STATE : active developing :) 
+## Project status : in progress... 
 
 
-## Introduction
+### Introduction
 
-### OOP (zen-observable)
+The simple library for event streams. OOP programming consider a stream as an object. On the other hand, in functional programming a stream is high order function.
+
+#### OOP (zen-observable)
 
 ```javascript
 const unsubscribe = Observable.of(1, 2, 3)
@@ -16,9 +18,9 @@ const unsubscribe = Observable.of(1, 2, 3)
   });
 ```
 
-### FP 
+#### FP
 
-```ml
+```f#
 let unsubscribe = 
   Stream.Async.of_list 1000 [1; 2; 3]
   |> Stream.map (fun x -> x + 1)
@@ -26,18 +28,20 @@ let unsubscribe =
   |> Stream.subscribe (fun x -> x |> string_of_int |> print_endline)
 ```
 
+------------------------
 
+### Setup
 
-### Build
+#### Build
 ```
 npm run build
 ```
 
-### Watch
+#### Watch
 
 ```
 npm run watch
 ```
 
-### Editor
+#### Editor
 If you use `vscode`, Press `Windows + Shift + B` it will build automatically

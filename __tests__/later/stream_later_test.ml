@@ -6,7 +6,7 @@ let _ =
     testPromise "call unsubscribe" (fun () ->
       Test.Async.interrupt
         ~stream:(Stream.later 500)
-        ~exhaust:[||]
+        ~result:[||]
         ~delay:0
     );
   )
