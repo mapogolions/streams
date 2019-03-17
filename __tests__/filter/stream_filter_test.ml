@@ -22,7 +22,7 @@ let _ =
       let time_for_checkout = delay * Array.length source + delay in
       let predicate = fun x -> x > 0 in
       let _unsubscribe = source
-        |> Stream.Async.of_array delay
+        |> Stream.Async.of_array ~delay
         |> Stream.filter predicate
         |> Stream.subscribe (MockJs.fn mock_fn)
       in
@@ -41,7 +41,7 @@ let _ =
       let time_for_checkout = delay * List.length source + delay in
       let predicate = fun x -> x mod 2 <> 0 in
       let _unsubscribe = source
-        |> Stream.Async.of_list delay
+        |> Stream.Async.of_list ~delay
         |> Stream.filter predicate
         |> Stream.subscribe (MockJs.fn mock_fn)
       in
@@ -60,7 +60,7 @@ let _ =
       let time_for_checkout = delay * List.length source + delay in
       let predicate = fun x -> x mod 2 = 0 in
       let _unsubscribe = source
-        |> Stream.Async.of_list delay
+        |> Stream.Async.of_list ~delay
         |> Stream.filter predicate
         |> Stream.subscribe (MockJs.fn mock_fn)
       in

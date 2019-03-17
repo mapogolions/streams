@@ -20,7 +20,7 @@ let _ =
       let time_for_checkout = delay * Array.length source + delay in
       let predicate = fun x -> x > 0 in
       let _unsubscribe = source
-        |> Stream.Async.of_array delay
+        |> Stream.Async.of_array ~delay
         |> Stream.take_while predicate
         |> Stream.subscribe (MockJs.fn mock_fn)
       in
@@ -34,7 +34,7 @@ let _ =
     testPromise "take only 1 item because occurs interruption" (fun () ->
       let predicate = fun x -> x > 0 in
       let stream = [1; 2; 3] 
-        |> Stream.Async.of_list 10 
+        |> Stream.Async.of_list ~delay:10
         |> Stream.take_while predicate 
       in
       let result = [| 1 |] in

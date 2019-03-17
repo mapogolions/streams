@@ -22,22 +22,24 @@ let skip n stream= fun cb ->
   stream (fun x -> if !count > 0 then let _ = count := !count - 1 in () else cb x)
 
 let chain f  stream = fun cb ->
-  let spawned_disposers = ref [] and base_disposer = ref noop in
+  let spawned_disposers = ref [] in
+  let base_disposer = ref noop in
   let _ = base_disposer := stream (fun x -> 
     let unsubscribe = (f x) cb in
     let _ = spawned_disposers := unsubscribe :: !spawned_disposers in ()
   ) in fun () -> begin !base_disposer (); List.iter (fun f -> f ()) !spawned_disposers end
 
 let chain_latest f stream = fun cb ->
-  let spawned_unsubscribe = ref noop and base_unsubscribe = ref noop in
+  let spawned_unsubscribe = ref noop in
+  let base_unsubscribe = ref noop in
   let _ = base_unsubscribe := stream (fun x ->
     let _ = !spawned_unsubscribe () in
     let _ = spawned_unsubscribe := (f x) cb in ()
   ) in fun () -> begin !base_unsubscribe (); !spawned_unsubscribe () end
 
 let take n stream = fun cb ->
-  let count = ref n
-  and unsubscribe = ref noop in
+  let count = ref n in
+  let unsubscribe = ref noop in
   let _ = unsubscribe := stream (fun x -> 
     if !count <= 0 then !unsubscribe () 
     else if !count <= 1 then begin !unsubscribe (); count := !count - 1; cb x end
@@ -80,16 +82,18 @@ let filter predicate stream =
 
 
 module Async = struct
-  let of_list delay xs = fun cb -> 
-    let stream = later delay and unsubscribe = ref noop in
+  let of_list ?(delay=0) xs = fun cb -> 
+    let stream = later delay in
+    let unsubscribe = ref noop in
       let rec iter xs =
         match xs with
         | []      -> ()
         | h :: t  -> begin unsubscribe := stream (fun () -> iter t); cb h end
       in begin unsubscribe := stream (fun () -> iter xs); fun () -> !unsubscribe () end
 
-  let of_array delay xs = fun cb -> 
-    let stream = later delay and unsubscribe = ref noop in
+  let of_array ?(delay=0) xs = fun cb -> 
+    let stream = later delay in
+    let unsubscribe = ref noop in
       let rec iter index =
         if index >= Array.length xs then ()
         else begin unsubscribe := stream (fun () -> iter (index + 1)); cb xs.(index) end

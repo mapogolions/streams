@@ -19,7 +19,7 @@ let _ =
       let delay = 10 in
       let time_for_checkout = delay * List.length source + delay in
       let _unsubscribe = source
-        |> Stream.Async.of_list delay
+        |> Stream.Async.of_list ~delay
         |> Stream.map String.length
         |> Stream.subscribe (MockJs.fn mock_fn)
       in

@@ -18,7 +18,7 @@ let _ =
       let delay = 10 in
       let time_for_checkout = delay * Array.length source + delay in
       let _unsubscribe = source
-        |> Stream.Async.of_array delay
+        |> Stream.Async.of_array ~delay
         |> Stream.skip (-10)
         |> Stream.subscribe (MockJs.fn mock_fn)
       in

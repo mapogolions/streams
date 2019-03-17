@@ -19,7 +19,7 @@ let _ =
       let delay = 10 in
       let time_for_checkout = delay * Array.length source + delay in
       let _unsubscribe = source
-        |> Stream.Async.of_array delay
+        |> Stream.Async.of_array ~delay
         |> Stream.take 3
         |> Stream.subscribe (MockJs.fn mock_fn)
       in
@@ -44,7 +44,7 @@ let _ =
       let delay = 10 in
       let time_for_checkout = delay * List.length source + delay in
       let _unsubscribe = source
-        |> Stream.Async.of_list delay
+        |> Stream.Async.of_list ~delay
         |> Stream.take (-20)
         |> Stream.subscribe (MockJs.fn mock_fn)
       in
@@ -69,7 +69,7 @@ let _ =
       let delay = 10 in
       let time_for_checkout = delay * List.length source + delay in
       let _unsubscribe = source
-        |> Stream.Async.of_list delay
+        |> Stream.Async.of_list ~delay
         |> Stream.take 20
         |> Stream.subscribe (MockJs.fn mock_fn)
       in
@@ -82,7 +82,7 @@ let _ =
     );
 
     testPromise "take 0 items because occurs interruption" (fun () ->
-      let stream = [1; 2; 3] |> Stream.Async.of_list 20 |> Stream.take 2 in
+      let stream = [1; 2; 3] |> Stream.Async.of_list ~delay:20 |> Stream.take 2 in
       let result = [||] in
       let delay = 5 in
       Test.Async.interrupt ~stream ~result ~delay

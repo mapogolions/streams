@@ -24,7 +24,7 @@ module Async = struct
           else resolve (expect calls |> toEqual result) [@bs]
         in
         let _unsubscribe = source
-          |> Stream.Async.of_list delay
+          |> Stream.Async.of_list ~delay
           |> Stream.subscribe subscriber
         in ()
       )
@@ -39,7 +39,7 @@ module Async = struct
           else resolve (expect calls |> toEqual result) [@bs]
         in
         let _unsubscribe = source
-          |> Stream.Async.of_array delay
+          |> Stream.Async.of_array ~delay
           |> Stream.subscribe subscriber
         in ()
       )

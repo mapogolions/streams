@@ -23,6 +23,6 @@ val filter : ('a -> bool) -> 'a t -> 'a t
 
 
 module Async : sig
-  val of_list : int -> 'a list -> 'a t
-  val of_array : int -> 'a array -> 'a t
+  val of_list : ?delay:int -> 'a list -> 'a t
+  val of_array : ?delay:int -> 'a array -> 'a t
 end
