@@ -4,9 +4,9 @@ open Jest
 let _ = 
   describe "stream later" (fun () -> 
     testPromise "call unsubscribe" (fun () ->
-      Test.Async.interrupt
-        ~stream:(Stream.later 500)
-        ~result:[||]
-        ~delay:0
+      let stream = Stream.later 20 in
+      let result = [||] in
+      let delay = 0 in
+      Test.Async.interrupt ~stream ~result ~delay
     );
   )

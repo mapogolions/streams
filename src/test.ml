@@ -14,7 +14,7 @@ module Async = struct
       ) delay in ()
     )
 
-    let match_to_list ~source ~result ~delay=
+    let stream_of_list_match ~source ~result ~delay =
       Js.Promise.make (fun ~resolve ~reject:_ ->
         let mock_fn = JestJs.fn (fun _x -> ()) in
         let subscriber = fun x ->
@@ -29,7 +29,7 @@ module Async = struct
         in ()
       )
     
-    let match_to_array ~source ~result ~delay =
+    let stream_of_array_match ~source ~result ~delay =
       Js.Promise.make (fun ~resolve ~reject:_ ->
         let mock_fn = JestJs.fn (fun _x -> ()) in
         let subscriber = fun x ->
@@ -42,16 +42,5 @@ module Async = struct
           |> Stream.Async.of_array delay
           |> Stream.subscribe subscriber
         in ()
-      )
-
-      let check_subsequence  ~stream ~result =
-        Js.Promise.make (fun ~resolve ~reject:_ ->
-          let mock_fn = JestJs.fn (fun _x -> ()) in
-          let subscriber = fun x ->
-            let _ = MockJs.fn mock_fn x in
-            let calls = mock_fn |> MockJs.calls in
-            if calls <> result then () else resolve (expect 1 |> toBe 1) [@bs]
-          in
-          let _unsubscribe = stream |> Stream.subscribe subscriber in ()
       )
 end

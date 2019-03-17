@@ -4,24 +4,24 @@ open Jest
 let _ = 
   describe "stream async" (fun () ->
     testPromise "Start every 10 ms" (fun () ->
-      Test.Async.match_to_list
-        ~source:["third"; "second"; "first"]  
-        ~result:[|"third"; "second"; "first"|] 
-        ~delay:10
+      let source = ["third"; "second"; "first"] in
+      let result = [|"third"; "second"; "first"|] in
+      let delay = 10 in
+      Test.Async.stream_of_list_match ~source ~result ~delay
     );
 
-    testPromise "Start every 50 ms. Call unsubscribe ot the 120th ms" (fun () -> 
-      Test.Async.interrupt 
-        ~stream:(Stream.Async.of_list 50 [1; 2; 3]) 
-        ~result:[|1; 2|] 
-        ~delay:120
+    testPromise "Start every 50 ms. Call unsubscribe ot the 120th ms" (fun () ->
+      let stream = [1; 2; 3] |> Stream.Async.of_list 50 in
+      let result = [|1; 2|] in
+      let delay = 120 in
+      Test.Async.interrupt ~stream ~result ~delay
     );
 
     testPromise "Start every 10 ms. Call unsubscribe on the next tick of loop" (fun () -> 
-      Test.Async.interrupt 
-        ~stream:(Stream.Async.of_array 10 [|1; 2; 3; 4|]) 
-        ~result:[||] 
-        ~delay:0
+      let stream = [|1; 2; 3; 4|] |> Stream.Async.of_array 10 in
+      let result = [||] in
+      let delay = 0 in
+      Test.Async.interrupt ~stream ~result ~delay
     );
   )
 
