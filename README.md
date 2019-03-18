@@ -1,4 +1,4 @@
-## Project status : in progress... 
+## Project status : in progress
 
 
 ### Introduction

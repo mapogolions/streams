@@ -21,6 +21,8 @@ val of_array_reverse : 'a array -> 'a t
 val map : ('a -> 'b) -> 'a t -> 'b t
 val filter : ('a -> bool) -> 'a t -> 'a t
 val ap : ('a -> 'b) t  -> 'a t -> 'b t
+val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+
 
 module Async : sig
   val of_list : ?delay:int -> 'a list -> 'a t

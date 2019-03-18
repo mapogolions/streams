@@ -60,7 +60,7 @@ let skip_while predicate stream = fun cb ->
       if not !miss then cb x else ()
     else cb x)
 
-let ap streamf streamx = fun cb ->
+let ap stream_f stream_x = fun cb ->
   let current_f = ref None in
   let current_x = ref None in
   let push () =
@@ -68,8 +68,8 @@ let ap streamf streamx = fun cb ->
     | Some f, Some x -> cb (f x)
     | _              -> ()
   in
-  let unsubscribe_f = streamf (fun f -> begin current_f := Some f; push () end) in
-  let unsubscribe_x = streamx (fun x -> begin current_x := Some x; push () end) in
+  let unsubscribe_f = stream_f (fun f -> begin current_f := Some f; push () end) in
+  let unsubscribe_x = stream_x (fun x -> begin current_x := Some x; push () end) in
   fun () -> begin unsubscribe_f (); unsubscribe_x () end
 
 let subscribe cb stream = stream cb
@@ -88,6 +88,8 @@ let of_array_reverse xs =
 
 let map f stream = 
   fun cb -> stream (fun x -> cb (f x))
+
+let map2 f stream_a stream_b = ap (map (fun a b -> f a b) stream_a) stream_b
 
 let filter predicate stream =
   fun cb -> stream (fun x -> if predicate x then cb x else ())
