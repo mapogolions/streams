@@ -20,7 +20,7 @@ val of_array : 'a array -> 'a t
 val of_array_reverse : 'a array -> 'a t
 val map : ('a -> 'b) -> 'a t -> 'b t
 val filter : ('a -> bool) -> 'a t -> 'a t
-
+val ap : ('a -> 'b) t  -> 'a t -> 'b t
 
 module Async : sig
   val of_list : ?delay:int -> 'a list -> 'a t

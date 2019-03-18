@@ -15,7 +15,7 @@ let _ =
     testAsync "skip if `n` is less than zero" (fun finish ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let source = [|1; 2; 3; 4; 5|] in
-      let delay = 10 in
+      let delay = 20 in
       let time_for_checkout = delay * Array.length source + delay in
       let _unsubscribe = source
         |> Stream.Async.of_array ~delay

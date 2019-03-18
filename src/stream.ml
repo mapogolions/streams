@@ -1,4 +1,4 @@
-type 'a t = ('a -> unit) -> (unit -> unit)
+type 'a t = ('a -> unit) -> unit -> unit
 
 let noop () = ()
 let empty_stream = fun _f -> noop
@@ -17,7 +17,7 @@ let scan reducer seed stream =
     let _ = cb seed in stream (fun elem -> 
       let _ = acc := reducer !acc elem in cb !acc)
 
-let skip n stream= fun cb -> 
+let skip n stream = fun cb -> 
   let count = ref n in
   stream (fun x -> if !count > 0 then let _ = count := !count - 1 in () else cb x)
 
@@ -60,7 +60,19 @@ let skip_while predicate stream = fun cb ->
       if not !miss then cb x else ()
     else cb x)
 
-let subscribe cb stream  = stream cb
+let ap streamf streamx = fun cb ->
+  let current_f = ref None in
+  let current_x = ref None in
+  let push () =
+    match !current_f, !current_x with
+    | Some f, Some x -> cb (f x)
+    | _              -> ()
+  in
+  let unsubscribe_f = streamf (fun f -> begin current_f := Some f; push () end) in
+  let unsubscribe_x = streamx (fun x -> begin current_x := Some x; push () end) in
+  fun () -> begin unsubscribe_f (); unsubscribe_x () end
+
+let subscribe cb stream = stream cb
 
 let of_list xs = 
   Base.List.fold_right (fun x stream -> prepend x stream) (empty ()) xs
