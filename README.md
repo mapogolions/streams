@@ -20,7 +20,7 @@ const unsubscribe = Observable.of(1, 2, 3)
 
 #### FP
 
-```f#
+```ocaml
 let unsubscribe = [1; 2; 3]
   |> Stream.Async.of_list ~delay:1000
   |> Stream.map (fun x -> x + 1)
@@ -38,22 +38,23 @@ let unsubscribe = [1; 2; 3]
 * [x] [of_item](./docs/of_item.md)
 * [x] [later](./docs/later.md)
 * [x] [prepend](./docs/prepend.md)
-* [ ] scan
+* [x] [scan](./docs/scan.md)
 * [x] [skip](./docs/skip.md)
 * [x] [skip_while](./docs/skip_while.md)
 * [x] [take](./docs/take.md)
 * [x] [take_while](./docs/take_while.md)
-* [ ] chain
-* [ ] chain_latest
+* [x] [chain](./docs/chain.md)
+* [x] [chain_latest](./docs/chain_latest.md)
 * [x] [subcribe](./docs/subscribe.md)
 * [x] [of_list](./docs/of_list.md)
 * [x] [of_list_reverse](./docs/of_list_reverse.md)
 * [x] [of_array](./docs/of_array.md)
 * [x] [of_array_reverse](./docs/of_array_reverse.md)
 * [x] [map](./docs/map.md)
-* [ ] map2
+* [x] [map2](./docs/map2.md)
+* [x] [map3](./docs/map3.md)
 * [x] [filter](./docs/filter.md)
-* [ ] ap
+* [x] [ap](./docs/ap.md)
 * [x] [Async.of_list](./docs/of_list.md)
 * [x] [Async.of_array](./docs/of_array.md)
 

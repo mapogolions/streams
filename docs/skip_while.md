@@ -6,7 +6,10 @@ let unsubscribe = [|1; 2; 0; 3|]
   |> Stream.skip_while (fun x -> x < 2)
   |> Stream.subscribe (fun x -> x |> string_of_int |> print_endline)
 
+let _ = print_endline "pass"
+
 (*
+  > "pass"
   > 3
   > 4
   
