@@ -4,5 +4,7 @@
 let unsubscribe = Stream.later 2000
   |> Stream.subscribe (fun () -> print_endline "pass")
 
-> "pass"
+(*
+  > "pass"
+*)
 ```

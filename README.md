@@ -37,22 +37,22 @@ let unsubscribe = [1; 2; 3]
 * [x] [empty](./docs/empty.md)
 * [x] [of_item](./docs/of_item.md)
 * [x] [later](./docs/later.md)
-* [ ] prepend
+* [x] [prepend](./docs/prepend.md)
 * [ ] scan
-* [ ] skip
-* [ ] skip_while
-* [ ] take
-* [ ] take_while
+* [x] [skip](./docs/skip.md)
+* [x] [skip_while](./docs/skip_while.md)
+* [x] [take](./docs/take.md)
+* [x] [take_while](./docs/take_while.md)
 * [ ] chain
 * [ ] chain_latest
-* [ ] subcribe
+* [x] [subcribe](./docs/subscribe.md)
 * [x] [of_list](./docs/of_list.md)
 * [x] [of_list_reverse](./docs/of_list_reverse.md)
 * [x] [of_array](./docs/of_array.md)
 * [x] [of_array_reverse](./docs/of_array_reverse.md)
-* [ ] map
+* [x] [map](./docs/map.md)
 * [ ] map2
-* [ ] filter
+* [x] [filter](./docs/filter.md)
 * [ ] ap
 * [x] [Async.of_list](./docs/of_list.md)
 * [x] [Async.of_array](./docs/of_array.md)

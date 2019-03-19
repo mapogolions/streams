@@ -1,7 +1,5 @@
 ### `Stream.of_array : 'a array -> 'a Stream.t`
 
-__Synchronous version__
-
 ```ocaml
 let unsubscribe = [|1; 2; 3|]
   |> Stream.of_array
@@ -15,7 +13,7 @@ let _ = print_endline "pass"
 > "pass"
 ```
 
-__Asynchronous version__
+### `Stream.Async.of_array : 'a array -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [|1; 2; 3|]
@@ -24,10 +22,12 @@ let unsubscribe = [|1; 2; 3|]
 
 let _ = print_endline "pass"
 
-> "pass"
-> 1
-> 2
-> 3
+(*
+  > "pass"
+  > 1
+  > 2
+  > 3
 
-stream: __1__2__3__.
+  stream: _1_2_3__.
+*)
 ```

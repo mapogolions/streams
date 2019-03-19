@@ -1,13 +1,13 @@
-### `Stream.of_list_reverse : 'a list -> 'a Stream.t`
+### `Stream.subscribe : ('a -> unit) -> 'a Stream.t` -> (unit -> unit)
 
 ```ocaml
 let unsubscribe = [1; 2; 3]
-  |> Stream.of_list_reverse
+  |> Stream.Async.of_list ~delay:2000
   |> Stream.subscribe (fun x -> x |> string_of_int |> print_endline)
 
 (*
-  > 3
-  > 2
   > 1
+  > 2
+  > 3
 *)
 ```

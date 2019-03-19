@@ -5,5 +5,7 @@ let unsubscribe = "hello"
   |> Stream.of_item
   |> Stream.subscribe print_endline
 
-> "hello"
+(*
+  > "hello"
+*)
 ```
