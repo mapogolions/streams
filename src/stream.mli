@@ -22,6 +22,7 @@ val map : ('a -> 'b) -> 'a t -> 'b t
 val filter : ('a -> bool) -> 'a t -> 'a t
 val ap : ('a -> 'b) t  -> 'a t -> 'b t
 val map2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+val map3 : ('a -> 'b -> 'c -> 'd) -> 'a t -> 'b t -> 'c t -> 'd t
 
 
 module Async : sig

@@ -91,6 +91,11 @@ let map f stream =
 
 let map2 f stream_a stream_b = ap (map (fun a b -> f a b) stream_a) stream_b
 
+let map3 f stream_a stream_b stream_c =
+  let stream_f = map (fun a b c -> f a b c) stream_a in
+  let stream_ab = ap stream_f stream_b in
+  ap stream_ab stream_c
+
 let filter predicate stream =
   fun cb -> stream (fun x -> if predicate x then cb x else ())
 
