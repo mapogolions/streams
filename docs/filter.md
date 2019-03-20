@@ -1,4 +1,4 @@
-### `Stream.filter : ('a -> bool) -> 'a Stream.t -> 'a Stream.t`
+#### `Stream.filter : ('a -> bool) -> 'a Stream.t -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [1; 2; 3]

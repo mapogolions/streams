@@ -1,4 +1,4 @@
-### `Stream.ap : ('a -> 'b) Stream.t -> 'a Stream.t -> 'b Stream.t`
+#### `Stream.ap : ('a -> 'b) Stream.t -> 'a Stream.t -> 'b Stream.t`
 
 ```ocaml
 let h = fun x -> x + 1

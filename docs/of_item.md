@@ -1,4 +1,4 @@
-### `Stream.of_item : 'a -> 'a Stream.t`
+#### `Stream.of_item : 'a -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = "hello"

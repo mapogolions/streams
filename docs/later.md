@@ -1,4 +1,4 @@
-### `Stream.later : int -> unit Stream.t`
+#### `Stream.later : int -> unit Stream.t`
 
 ```ocaml
 let unsubscribe = Stream.later 2000

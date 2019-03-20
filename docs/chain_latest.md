@@ -1,4 +1,4 @@
-### `Stream.chan_latest : ('a -> 'b Stream.t) -> 'a Stream.t -> 'b Stream.t`
+#### `Stream.chan_latest : ('a -> 'b Stream.t) -> 'a Stream.t -> 'b Stream.t`
 
 ```ocaml
 let unsubscribe = [1; 2; 3]

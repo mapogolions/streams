@@ -1,4 +1,4 @@
-### `Stream.prepend : 'a -> 'a Stream.t -> 'a Stream.t`
+#### `Stream.prepend : 'a -> 'a Stream.t -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [1; 2; 3]

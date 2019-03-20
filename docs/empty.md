@@ -1,4 +1,4 @@
-### `Stream.empty : unit -> 'a Stream.t`
+#### `Stream.empty : unit -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = Stream.empty ()

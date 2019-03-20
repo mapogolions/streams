@@ -1,4 +1,4 @@
-### `Stream.skip_while : ('a -> bool) -> 'a Stream.t -> 'a Stream.t`
+#### `Stream.skip_while : ('a -> bool) -> 'a Stream.t -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [|1; 2; 0; 3|]

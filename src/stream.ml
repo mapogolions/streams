@@ -117,6 +117,9 @@ let map3 f stream_a stream_b stream_c =
 let filter predicate stream =
   fun cb -> stream (fun x -> if predicate x then cb x else ())
 
+let merge streams =
+  let identity x = x in
+  chain identity (of_array streams)
 
 module Async = struct
   let of_list ?(delay=0) xs = fun cb -> 

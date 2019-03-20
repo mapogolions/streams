@@ -1,4 +1,4 @@
-### `Stream.of_array : 'a array -> 'a Stream.t`
+#### `Stream.of_array : 'a array -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [|1; 2; 3|]

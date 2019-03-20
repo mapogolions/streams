@@ -1,4 +1,4 @@
-### `Stream.map3 : ('a -> 'b -> 'c -> 'd) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t -> 'd Stream.t`
+#### `Stream.map3 : ('a -> 'b -> 'c -> 'd) -> 'a Stream.t -> 'b Stream.t -> 'c Stream.t -> 'd Stream.t`
 
 ```ocaml
 let stream_a = Stream.Async.of_list ~delay:5000 [2; 4]

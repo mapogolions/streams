@@ -1,4 +1,4 @@
-### `Stream.scan : ('b -> 'a -> 'b) -> 'b -> 'a Stream.t -> 'a Stream.t`
+#### `Stream.scan : ('b -> 'a -> 'b) -> 'b -> 'a Stream.t -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [1; 2; 3]

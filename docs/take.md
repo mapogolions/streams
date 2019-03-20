@@ -1,4 +1,4 @@
-### `Stream.take : int -> 'a Stream.t -> 'a Stream.t`
+#### `Stream.take : int -> 'a Stream.t -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [1; 2; 3]

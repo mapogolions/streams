@@ -1,4 +1,4 @@
-### `Stream.skip : int -> 'a Stream.t -> 'a Stream.t`
+#### `Stream.skip : int -> 'a Stream.t -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [1; 2; 3; 4]

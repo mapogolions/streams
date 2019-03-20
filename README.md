@@ -55,6 +55,7 @@ let unsubscribe = [1; 2; 3]
 * [x] [map3](./docs/map3.md)
 * [x] [filter](./docs/filter.md)
 * [x] [ap](./docs/ap.md)
+* [x] [merge](./docs/merge.md)
 * [x] [Async.of_list](./docs/of_list.md)
 * [x] [Async.of_array](./docs/of_array.md)
 
