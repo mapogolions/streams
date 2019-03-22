@@ -6,11 +6,11 @@
 
 * Project motivation - learning by creating (I created this to learn the intricate details)
 * No intended for production (I don't have a long term intent to maintain this project for real use)
-* I'd suggest using a mature project [basic-stream](https://github.com/rpominov/basic-streams)
+* I'd suggest using a mature project [basic-streams](https://github.com/rpominov/basic-streams)
 
 ### Introduction
 
-The simple library for event streams. OOP programming consider a stream as an object. On the other hand, in functional programming a stream is a high order function.
+OOP programming consider a stream as an object. On the other hand, in functional programming a stream is a high order function.
 
 #### OOP (zen-observable)
 
@@ -88,4 +88,5 @@ npm install
 npm run build
 npm run webpack
 ```
-Then open `./index.html` and open browser console(no server needed!)
+
+Then open `./index.html` (no server needed!)
