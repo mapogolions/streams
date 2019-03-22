@@ -1,9 +1,16 @@
-## Project status : in progress
+## Basic event streams for Ocaml(Bucklescript)
 
+[Inspired by - Basic event streams for javascript](https://github.com/rpominov/basic-streams)
+
+### Disclaimers
+
+* Project motivation - learning by creating (I created this to learn the intricate details)
+* No intended for production (I don't have a long term intent to maintain this project for real use)
+* I'd suggest using a mature project [basic-stream](https://github.com/rpominov/basic-streams)
 
 ### Introduction
 
-The simple library for event streams. OOP programming consider a stream as an object. On the other hand, in functional programming a stream is high order function.
+The simple library for event streams. OOP programming consider a stream as an object. On the other hand, in functional programming a stream is a high order function.
 
 #### OOP (zen-observable)
 
@@ -62,6 +69,18 @@ let unsubscribe = [1; 2; 3]
 ------------------------
 ### Setup
 
+__Node.js__
+
+```sh
+git clone https://github.com/mapogolions/streams.git
+cd streams
+npm install
+npm run build
+node src/app.bs.js
+```
+
+__Browser__
+
 ```sh
 git clone https://github.com/mapogolions/streams.git
 cd streams
@@ -69,5 +88,4 @@ npm install
 npm run build
 npm run webpack
 ```
-
-Then open ./index.html and open browser console(no server needed!) or enter the command `node src/app.bs.js`
+Then open `./index.html` and open browser console(no server needed!)
