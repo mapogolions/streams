@@ -62,16 +62,12 @@ let unsubscribe = [1; 2; 3]
 ------------------------
 ### Setup
 
-#### Build
-```
+```sh
+git clone https://github.com/mapogolions/streams.git
+cd streams
+npm install
 npm run build
+npm run webpack
 ```
 
-#### Watch
-
-```
-npm run watch
-```
-
-#### Editor
-If you use `vscode`, Press `Windows + Shift + B` it will build automatically
+Then open ./index.html and open browser console(no server needed!) or enter the command `node src/app.bs.js`
