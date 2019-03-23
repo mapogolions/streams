@@ -1,6 +1,4 @@
-## Basic event streams for OCaml. 
-
-### Compiler[BuckleScript](https://bucklescript.github.io)
+## Basic event streams for OCaml([BuckleScript](https://bucklescript.github.io))
 
 [Inspired by - Basic event streams for javascript](https://github.com/rpominov/basic-streams)
 
