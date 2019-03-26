@@ -7,13 +7,15 @@ let unsubscribe = [|1; 2; 3|]
 
 let _ = print_endline "pass"
 
-> 1
-> 2
-> 3
-> "pass"
+(*
+  > 1
+  > 2
+  > 3
+  > "pass"
+*)
 ```
 
-### `Stream.Async.of_array : 'a array -> 'a Stream.t`
+#### `Stream.Async.of_array : 'a array -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [|1; 2; 3|]

@@ -15,7 +15,7 @@ let _ = print_endline "pass"
 *)
 ```
 
-### `Stream.Async.of_list : 'a list -> 'a Stream.t`
+#### `Stream.Async.of_list : 'a list -> 'a Stream.t`
 
 ```ocaml
 let unsubscribe = [1; 2; 3]
