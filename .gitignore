@@ -20,6 +20,8 @@
 *.bak
 lib/bs
 node_modules/
+public/
+dist/
 *.mlast
 *.mliast
 .vscode
