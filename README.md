@@ -10,7 +10,7 @@
 
 ### Introduction
 
-OOP programming consider a stream as an object. On the other hand, in functional programming a stream is a high order function.
+OOP programming consider a stream as an object. On the other hand, in functional programming a stream is a higher order function.
 
 #### OOP (zen-observable)
 
