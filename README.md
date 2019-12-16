@@ -76,6 +76,7 @@ git clone https://github.com/mapogolions/streams.git
 cd streams
 npm install
 npm run build
+npm run test
 node src/app.bs.js
 ```
 
@@ -86,7 +87,13 @@ git clone https://github.com/mapogolions/streams.git
 cd streams
 npm install
 npm run build
+npm run test
 npm run webpack
 ```
 
 then open `./public/index.html` (no server needed!)
+
+Clean up folder
+```sh
+npm run clean
+```
