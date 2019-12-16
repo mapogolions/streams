@@ -1,8 +1,8 @@
 open Jest
 
 
-let _ = 
-  describe "stream skip while" (fun () -> 
+let _ =
+  describe "stream skip while" (fun () ->
     let open Expect in
     test "skip items until a positive number will be encountered" (fun () ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
@@ -15,18 +15,14 @@ let _ =
     testAsync "skip if item is less than zero" (fun finish ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let source = [|1; 2; 3; 4; 5|] in
-      let delay = 10 in
-      let time_for_checkout = delay * Array.length source + delay in
-      let predicate = fun x -> x < 0 in
-      let _unsubscribe = source
-        |> Stream.Async.of_array ~delay
-        |> Stream.skip_while predicate
-        |> Stream.subscribe (MockJs.fn mock_fn)
-      in
-      let _ = Interop.setTimeout (fun () ->
+      let check () =
         let calls = mock_fn |> MockJs.calls in
         expect calls |> toEqual source |> finish
-      ) time_for_checkout
+      in
+      let _unsubscribe = source
+        |> Stream.Async.of_array ~delay:10 ~finish:check
+        |> Stream.skip_while (fun x -> x < 0)
+        |> Stream.subscribe (MockJs.fn mock_fn)
       in ()
     );
   )

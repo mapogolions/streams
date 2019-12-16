@@ -15,18 +15,14 @@ let _ =
 
     testAsync "take 3 items from an async stream" (fun finish ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
-      let source = [|1; 2; 3; 4; 5|] in
-      let delay = 10 in
-      let time_for_checkout = delay * Array.length source + delay in
-      let _unsubscribe = source
-        |> Stream.Async.of_array ~delay
-        |> Stream.take 3
-        |> Stream.subscribe (MockJs.fn mock_fn)
-      in
-      let _ = Interop.setTimeout (fun () ->
+      let check () =
         let calls = mock_fn |> MockJs.calls in
         expect calls |> toEqual [|1; 2; 3|] |> finish
-      ) time_for_checkout
+      in
+      let _unsubscribe = [|1; 2; 3; 4; 5|]
+        |> Stream.Async.of_array ~delay:10 ~finish:check
+        |> Stream.take 3
+        |> Stream.subscribe (MockJs.fn mock_fn)
       in ()
     );
 
@@ -40,21 +36,17 @@ let _ =
 
     testAsync "take negative number of items from an async stream" (fun finish ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
-      let source = [1; 2; 3; 4; 5] in
-      let delay = 10 in
-      let time_for_checkout = delay * List.length source + delay in
-      let _unsubscribe = source
-        |> Stream.Async.of_list ~delay
-        |> Stream.take (-20)
-        |> Stream.subscribe (MockJs.fn mock_fn)
-      in
-      let _ = Interop.setTimeout (fun () ->
+      let check () =
         let calls = mock_fn |> MockJs.calls in
         expect calls |> toEqual [||] |> finish
-      ) time_for_checkout
+      in
+      let _unsubscribe = [1; 2; 3; 4; 5]
+        |> Stream.Async.of_list ~delay:10 ~finish:check
+        |> Stream.take (-20)
+        |> Stream.subscribe (MockJs.fn mock_fn)
       in ()
     );
-    
+
     test "take big positive number of items from a sync stream" (fun () ->
       let stream = Stream.take 10 (Stream.of_list [1; 2; 3; 4]) in
       let mock_fn = JestJs.fn (fun _x -> ()) in
@@ -66,18 +58,15 @@ let _ =
     testAsync "take big positive number of items from an async stream" (fun finish ->
       let mock_fn = JestJs.fn (fun _x -> ()) in
       let source = [1; 2; 3; 4; 5] in
-      let delay = 10 in
-      let time_for_checkout = delay * List.length source + delay in
-      let _unsubscribe = source
-        |> Stream.Async.of_list ~delay
-        |> Stream.take 20
-        |> Stream.subscribe (MockJs.fn mock_fn)
-      in
-      let _ = Interop.setTimeout (fun () ->
+      let check () =
         let calls = mock_fn |> MockJs.calls in
         let result = Base.List.array_of_list source in
         expect calls |> toEqual result |> finish
-      ) time_for_checkout
+      in
+      let _unsubscribe = source
+        |> Stream.Async.of_list ~delay:10 ~finish:check
+        |> Stream.take 20
+        |> Stream.subscribe (MockJs.fn mock_fn)
       in ()
     );
 

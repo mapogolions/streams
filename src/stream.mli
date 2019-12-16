@@ -4,7 +4,7 @@ val noop : unit -> unit
 val empty_stream : 'a t
 val empty : unit -> 'a t
 val of_item : 'a -> 'a t
-val later : int -> unit t
+val later : ?finish:(unit -> unit) -> int -> unit t
 val prepend : 'a -> 'a t -> 'a t
 val scan : ('b -> 'a -> 'b) -> 'b -> 'a t -> 'b t
 val skip : int -> 'a t -> 'a t
@@ -27,6 +27,6 @@ val map3 : ('a -> 'b -> 'c -> 'd) -> 'a t -> 'b t -> 'c t -> 'd t
 
 
 module Async : sig
-  val of_list : ?delay:int -> 'a list -> 'a t
-  val of_array : ?delay:int -> 'a array -> 'a t
+  val of_list : ?delay:int -> ?finish:(unit -> unit) -> 'a list -> 'a t
+  val of_array : ?delay:int -> ?finish:(unit -> unit) -> 'a array -> 'a t
 end
