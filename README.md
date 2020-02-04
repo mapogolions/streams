@@ -1,5 +1,7 @@
 ## Basic event streams for OCaml([BuckleScript](https://bucklescript.github.io))
 
+[![Build Status](https://travis-ci.org/mapogolions/streams.svg?branch=master)](https://travis-ci.org/mapogolions/streams)
+
 [Inspired by - Basic event streams for javascript](https://github.com/rpominov/basic-streams)
 
 ### Disclaimers
