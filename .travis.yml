@@ -1,0 +1,10 @@
+dist: bionic
+sudo: true
+language: node_js
+node_js: node
+install:
+  - npm i
+script:
+  - npm run build
+  - npm run test
+  - npm run clean
