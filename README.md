@@ -4,12 +4,6 @@
 
 [Inspired by - Basic event streams for javascript](https://github.com/rpominov/basic-streams)
 
-### Disclaimers
-
-* Project motivation - learning by creating (I created this to learn the intricate details)
-* No intended for production (I don't have a long term intent to maintain this project for real use)
-* I'd suggest using a mature project [basic-streams](https://github.com/rpominov/basic-streams)
-
 ### Introduction
 
 OOP programming consider a stream as an object. On the other hand, in functional programming a stream is a higher order function.
